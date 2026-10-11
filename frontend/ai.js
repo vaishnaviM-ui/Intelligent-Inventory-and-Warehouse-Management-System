@@ -72,9 +72,8 @@ async function generatePrediction() {
 
         const predictionResponse =
             await fetch(
-                `${API_URL}/predictions/${productId}`,
+                `${API_URL}/ai/forecast/${productId}?days=30`,
                 {
-                    method: "POST",
                     headers: authHeaders()
                 }
             );
@@ -109,8 +108,7 @@ async function generatePrediction() {
 
         const demand =
             Number(
-                prediction.predicted_demand ??
-                prediction.predicted_quantity ??
+                prediction.total_predicted_demand ??
                 0
             );
 
@@ -118,7 +116,14 @@ async function generatePrediction() {
         document.getElementById(
             "predictedDemand"
         ).textContent =
-            demand.toLocaleString();
+            demand.toLocaleString(undefined, {
+                maximumFractionDigits: 2
+            });
+
+        document.getElementById(
+            "currentStock"
+        ).textContent =
+            Number(prediction.current_stock).toLocaleString();
 
 
         /* ======================================
@@ -157,9 +162,6 @@ async function generatePrediction() {
            CURRENT STOCK
         ====================================== */
 
-        await loadCurrentStock(productId);
-
-
     }
     catch (error) {
 
@@ -174,9 +176,12 @@ async function generatePrediction() {
         ).textContent =
             "--";
 
+        document.getElementById("currentStock").textContent = "--";
+        document.getElementById("recommendedRestock").textContent = "--";
+        document.getElementById("aiDecision").textContent = "--";
 
         showChartMessage(
-            "Unable to generate forecast."
+            `Unable to generate forecast: ${error.message}`
         );
 
 
@@ -223,11 +228,13 @@ function createForecastChart(predictions) {
     chart.innerHTML = "";
 
 
-    const values =
-        predictions.map(
-            value =>
-                Number(value) || 0
-        );
+    const values = predictions.map(point =>
+        Number(typeof point === "number" ? point : point.predicted_units)
+    );
+    if (values.some(value => !Number.isFinite(value))) {
+        showChartMessage("Forecast data contains invalid daily values.");
+        return;
+    }
 
 
     const maxValue =
@@ -285,7 +292,9 @@ function createForecastChart(predictions) {
                 "forecast-value";
 
             valueLabel.textContent =
-                Number(value).toLocaleString();
+                Number(value).toLocaleString(undefined, {
+                    maximumFractionDigits: 2
+                });
 
 
             /* -------------------------------
@@ -319,7 +328,9 @@ function createForecastChart(predictions) {
 
 
             bar.title =
-                `Day ${index + 1}: ${Number(value).toLocaleString()} units`;
+                `${predictions[index].date || `Day ${index + 1}`}: ${Number(value).toLocaleString(undefined, {
+                    maximumFractionDigits: 2
+                })} units`;
 
 
             /* -------------------------------
@@ -334,7 +345,7 @@ function createForecastChart(predictions) {
 
 
             dayLabel.textContent =
-                `D${index + 1}`;
+                `D${predictions[index].day || index + 1}`;
 
 
             /* -------------------------------
@@ -471,7 +482,7 @@ async function loadRestock(productId) {
 
         const recommended =
             Number(
-                data.recommended_restock ?? 0
+                data.recommended_restock_quantity ?? 0
             );
 
 
@@ -611,79 +622,6 @@ async function loadRestock(productId) {
 /* ==========================================
    CURRENT STOCK
 ========================================== */
-
-async function loadCurrentStock(productId) {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_URL}/inventory`,
-                {
-                    headers: authHeaders()
-                }
-            );
-
-
-        if (response.status === 401) {
-
-            logoutUser();
-
-            return;
-
-        }
-
-
-        const inventory =
-            await response.json();
-
-
-        const matching =
-            inventory.filter(
-                item =>
-                    Number(
-                        item.product_id
-                    ) === Number(productId)
-            );
-
-
-        const stock =
-            matching.reduce(
-                (
-                    total,
-                    item
-                ) =>
-                    total +
-                    Number(
-                        item.quantity ?? 0
-                    ),
-                0
-            );
-
-
-        document.getElementById(
-            "currentStock"
-        ).textContent =
-            stock.toLocaleString();
-
-    }
-    catch (error) {
-
-        console.error(
-            "Stock Error:",
-            error
-        );
-
-
-        document.getElementById(
-            "currentStock"
-        ).textContent =
-            "--";
-
-    }
-
-}
-
 
 /* ==========================================
    LOGOUT
