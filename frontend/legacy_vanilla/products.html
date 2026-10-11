@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Smart Inventory</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .product-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .product-form label {
+            display: grid;
+            gap: 7px;
+        }
+        .product-form input,
+        .product-form select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+        }
+        .product-form .wide {
+            grid-column: 1 / -1;
+        }
+        .product-message {
+            min-height: 1.5em;
+            margin: 12px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand"><span class="brand-icon">📦</span><span>SMART INVENTORY</span></div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="inventory.html">Inventory</a>
+            <a href="products.html" class="active">Products</a>
+            <a href="analytics.html">Analytics</a>
+            <a href="ai.html">AI Intelligence</a>
+            <a href="warehouses.html">Warehouses</a>
+            <button onclick="logoutUser()" class="logout-btn">Logout</button>
+        </div>
+    </nav>
+
+    <main class="inventory-page">
+        <section class="inventory-hero">
+            <div>
+                <span class="section-tag">PRODUCT CATALOG</span>
+                <h1>Product Management</h1>
+                <p>Browse the catalog and add products with optional opening stock.</p>
+            </div>
+            <button class="refresh-btn" type="button" onclick="loadProducts()">↻ Refresh Products</button>
+        </section>
+
+        <section class="inventory-table-card">
+            <div class="table-header">
+                <div><span class="chart-label">ADD PRODUCT</span><h2>Product Details</h2></div>
+            </div>
+            <form id="productForm" class="product-form">
+                <label>Name<input id="productName" name="name" maxlength="150" required></label>
+                <label>SKU (optional)<input id="productSku" name="sku" maxlength="100"></label>
+                <label>Category<select id="productCategory" name="category_id" required></select></label>
+                <label>Supplier<select id="productSupplier" name="supplier_id" required></select></label>
+                <label>Unit price<input id="unitPrice" name="unit_price" type="number" min="0" step="0.01" required></label>
+                <label>Cost price<input id="costPrice" name="cost_price" type="number" min="0" step="0.01"></label>
+                <label>Opening stock<input id="initialStock" name="initial_stock" type="number" min="0" step="1" value="0" required></label>
+                <label>Opening warehouse<select id="initialWarehouse" name="initial_warehouse_id"></select></label>
+                <label>Reorder level<input id="reorderLevel" name="reorder_level" type="number" min="0" step="1" value="10" required></label>
+                <label class="wide">Description<textarea id="productDescription" name="description" rows="3"></textarea></label>
+                <div class="wide">
+                    <button class="refresh-btn" type="submit" id="createProductButton">Create Product</button>
+                    <p id="productMessage" class="product-message" role="status"></p>
+                </div>
+            </form>
+        </section>
+
+        <section class="inventory-table-card">
+            <div class="table-header">
+                <div><span class="chart-label">LIVE CATALOG</span><h2>Products</h2></div>
+                <span id="productCount" class="record-count">Loading...</span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead><tr><th>SKU</th><th>Product</th><th>Category</th><th>Supplier</th><th>Price</th><th>Stock</th><th>Status</th></tr></thead>
+                    <tbody id="productTableBody"><tr><td colspan="7" class="table-loading">Loading products...</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="products.js"></script>
+</body>
+</html>

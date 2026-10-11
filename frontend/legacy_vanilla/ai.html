@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AI Intelligence | Smart Inventory</title>
+
+    <link
+        rel="stylesheet"
+        href="../style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <span class="brand-icon">
+                🤖
+            </span>
+
+            <span>
+                SMART INVENTORY
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="inventory.html">
+                Inventory
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="analytics.html">
+                Analytics
+            </a>
+
+            <a
+                href="ai.html"
+                class="active"
+            >
+                AI Intelligence
+            </a>
+
+            <a href="warehouses.html">
+                Warehouses
+            </a>
+
+            <button
+                onclick="logoutUser()"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="ai-page">
+
+
+        <!-- HERO -->
+
+        <section class="ai-hero">
+
+            <div>
+
+                <span class="section-tag">
+                    ARTIFICIAL INTELLIGENCE
+                </span>
+
+                <h1>
+                    AI Demand Intelligence
+                </h1>
+
+                <p>
+                    Predict future product demand and
+                    make smarter replenishment decisions.
+                </p>
+
+            </div>
+
+
+            <div class="ai-status">
+
+                <span class="ai-pulse"></span>
+
+                AI MODEL ACTIVE
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PRODUCT SELECTOR ================= -->
+
+        <section class="ai-selector">
+
+            <div>
+
+                <span>
+                    SELECT PRODUCT
+                </span>
+
+                <h2>
+                    Demand Forecast
+                </h2>
+
+            </div>
+
+
+            <div class="ai-controls">
+
+                <input
+                    type="number"
+                    id="productId"
+                    placeholder="Product ID"
+                    min="1"
+                >
+
+                <button
+                    onclick="generatePrediction()"
+                    class="ai-generate-btn"
+                >
+                    ✨ Generate Prediction
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= AI KPI ================= -->
+
+        <section class="ai-kpis">
+
+
+            <div class="ai-kpi-card">
+
+                <span>
+                    PREDICTED DEMAND
+                </span>
+
+                <strong id="predictedDemand">
+                    --
+                </strong>
+
+                <small>
+                    Next 30 days
+                </small>
+
+            </div>
+
+
+            <div class="ai-kpi-card">
+
+                <span>
+                    CURRENT STOCK
+                </span>
+
+                <strong id="currentStock">
+                    --
+                </strong>
+
+                <small>
+                    Available units
+                </small>
+
+            </div>
+
+
+            <div class="ai-kpi-card">
+
+                <span>
+                    RECOMMENDED RESTOCK
+                </span>
+
+                <strong id="recommendedRestock">
+                    --
+                </strong>
+
+                <small>
+                    Suggested quantity
+                </small>
+
+            </div>
+
+
+            <div class="ai-kpi-card">
+
+                <span>
+                    DECISION
+                </span>
+
+                <strong
+                    id="aiDecision"
+                    class="ai-decision"
+                >
+                    --
+                </strong>
+
+                <small>
+                    AI recommendation
+                </small>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= FORECAST + RESTOCK ================= -->
+
+        <section class="ai-grid">
+
+
+            <!-- ================= FORECAST CHART ================= -->
+
+            <div class="ai-chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <span class="section-tag">
+                            MACHINE LEARNING FORECAST
+                        </span>
+
+                        <h2>
+                            30-Day Demand Forecast
+                        </h2>
+
+                    </div>
+
+                    <span class="chart-icon">
+                        📊
+                    </span>
+
+                </div>
+
+
+                <!-- CHART -->
+
+                <div class="forecast-wrapper">
+
+                    <div
+                        id="forecastChart"
+                        class="forecast-chart"
+                    >
+
+                        <div class="chart-placeholder">
+
+                            <div>
+                                📈
+                            </div>
+
+                            <p>
+                                Select a product and generate
+                                an AI prediction to view the
+                                30-day demand forecast.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= RESTOCK ================= -->
+
+            <div class="ai-card">
+
+                <div class="ai-card-header">
+
+                    <div>
+
+                        <span>
+                            SMART REPLENISHMENT
+                        </span>
+
+                        <h2>
+                            Restocking Decision
+                        </h2>
+
+                    </div>
+
+                    <span class="ai-card-icon">
+                        🛒
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="restockResult"
+                    class="restock-result"
+                >
+
+                    <div class="restock-placeholder">
+
+                        <div>
+                            🤖
+                        </div>
+
+                        <p>
+                            Select a product and generate
+                            an AI prediction to view the
+                            recommended action.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= AI PIPELINE ================= -->
+
+        <section class="ai-card ai-pipeline">
+
+            <div class="ai-card-header">
+
+                <div>
+
+                    <span>
+                        AI DECISION PIPELINE
+                    </span>
+
+                    <h2>
+                        How Smart Inventory Predicts Demand
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="pipeline-flow">
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        01
+                    </div>
+
+                    <strong>
+                        Historical Sales
+                    </strong>
+
+                    <small>
+                        Sales transaction data
+                    </small>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        02
+                    </div>
+
+                    <strong>
+                        ML Model
+                    </strong>
+
+                    <small>
+                        Linear Regression
+                    </small>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        03
+                    </div>
+
+                    <strong>
+                        Demand Forecast
+                    </strong>
+
+                    <small>
+                        30-day prediction
+                    </small>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <div class="pipeline-number">
+                        04
+                    </div>
+
+                    <strong>
+                        Smart Decision
+                    </strong>
+
+                    <small>
+                        Restock recommendation
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= EXPLANATION ================= -->
+
+        <section class="ai-explanation">
+
+            <div class="explanation-icon">
+                🧠
+            </div>
+
+            <div>
+
+                <span>
+                    AI EXPLANATION
+                </span>
+
+                <h3>
+                    From historical demand to inventory decisions
+                </h3>
+
+                <p>
+                    The system uses historical sales information
+                    to estimate future product demand. The predicted
+                    demand is compared with available inventory to
+                    determine whether replenishment is required.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Smart Inventory Management System
+        </p>
+
+        <span>
+            PostgreSQL • FastAPI • Machine Learning
+        </span>
+
+    </footer>
+
+
+    <script src="ai.js"></script>
+
+</body>
+
+</html>

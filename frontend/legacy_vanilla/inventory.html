@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Inventory | Smart Inventory</title>
+
+    <link
+        rel="stylesheet"
+        href="../style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <span class="brand-icon">
+                📦
+            </span>
+
+            <span>
+                SMART INVENTORY
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a
+                href="inventory.html"
+                class="active"
+            >
+                Inventory
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="analytics.html">
+                Analytics
+            </a>
+
+            <a href="ai.html">
+                AI Intelligence
+            </a>
+
+            <a href="warehouses.html">
+                Warehouses
+            </a>
+
+            <button
+                onclick="logoutUser()"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="inventory-page">
+
+
+        <!-- HERO -->
+
+        <section class="inventory-hero">
+
+            <div>
+
+                <span class="section-tag">
+                    INVENTORY CONTROL
+                </span>
+
+                <h1>
+                    Inventory Management
+                </h1>
+
+                <p>
+                    Monitor stock levels, warehouses
+                    and reorder requirements in real time.
+                </p>
+
+            </div>
+
+
+            <button
+                class="refresh-btn"
+                onclick="loadInventory()"
+            >
+                ↻ Refresh Inventory
+            </button>
+
+        </section>
+
+
+
+        <!-- ================= SUMMARY ================= -->
+
+        <section class="inventory-summary">
+
+
+            <div class="inventory-summary-card">
+
+                <span>
+                    TOTAL STOCK UNITS
+                </span>
+
+                <strong id="totalUnits">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-summary-card">
+
+                <span>
+                    STOCK RECORDS
+                </span>
+
+                <strong id="totalRecords">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-summary-card">
+
+                <span>
+                    HEALTHY STOCK
+                </span>
+
+                <strong
+                    id="healthyRecords"
+                    class="healthy-number"
+                >
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="inventory-summary-card">
+
+                <span>
+                    LOW STOCK
+                </span>
+
+                <strong
+                    id="lowStockRecords"
+                    class="warning-number"
+                >
+                    --
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section class="inventory-controls">
+
+            <div class="search-box">
+
+                <span>
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="inventorySearch"
+                    placeholder="Search product or warehouse..."
+                    onkeyup="filterInventory()"
+                >
+
+            </div>
+
+
+            <select
+                id="stockFilter"
+                onchange="filterInventory()"
+            >
+
+                <option value="all">
+                    All Stock
+                </option>
+
+                <option value="healthy">
+                    Healthy
+                </option>
+
+                <option value="low">
+                    Low Stock
+                </option>
+
+            </select>
+
+        </section>
+
+
+
+        <!-- ================= TABLE ================= -->
+
+        <section class="inventory-table-card">
+
+
+            <div class="table-header">
+
+                <div>
+
+                    <span class="chart-label">
+                        LIVE INVENTORY
+                    </span>
+
+                    <h2>
+                        Stock Overview
+                    </h2>
+
+                </div>
+
+
+                <span
+                    id="inventoryCount"
+                    class="record-count"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Product
+                            </th>
+
+                            <th>
+                                Warehouse
+                            </th>
+
+                            <th>
+                                Current Stock
+                            </th>
+
+                            <th>
+                                Reorder Level
+                            </th>
+
+                            <th>
+                                Stock Status
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="inventoryTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="table-loading"
+                            >
+                                Loading inventory...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= INFO ================= -->
+
+        <section class="inventory-info">
+
+            <div class="info-icon">
+                💡
+            </div>
+
+            <div>
+
+                <span>
+                    SMART INVENTORY MONITORING
+                </span>
+
+                <h3 id="inventoryInsight">
+                    Analyzing current stock...
+                </h3>
+
+                <p>
+                    Inventory levels are continuously
+                    compared against reorder thresholds
+                    to identify potential stock shortages.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Smart Inventory Management System
+        </p>
+
+        <span>
+            PostgreSQL • FastAPI • Inventory Control
+        </span>
+
+    </footer>
+
+
+
+    <script src="inventory.js"></script>
+
+</body>
+
+</html>

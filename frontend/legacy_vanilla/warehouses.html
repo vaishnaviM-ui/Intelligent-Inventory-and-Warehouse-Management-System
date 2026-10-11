@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Warehouses | Smart Inventory</title>
+
+    <link
+        rel="stylesheet"
+        href="../style.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+
+            <span class="brand-icon">
+                🏭
+            </span>
+
+            <span>
+                SMART INVENTORY
+            </span>
+
+        </div>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="inventory.html">
+                Inventory
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="analytics.html">
+                Analytics
+            </a>
+
+            <a href="ai.html">
+                AI Intelligence
+            </a>
+
+            <a
+                href="warehouses.html"
+                class="active"
+            >
+                Warehouses
+            </a>
+
+            <button
+                onclick="logoutUser()"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="warehouse-page">
+
+
+        <!-- HERO -->
+
+        <section class="warehouse-hero">
+
+            <div>
+
+                <span class="section-tag">
+                    WAREHOUSE OPERATIONS
+                </span>
+
+                <h1>
+                    Warehouse Intelligence
+                </h1>
+
+                <p>
+                    Monitor inventory distribution and
+                    warehouse performance from one place.
+                </p>
+
+            </div>
+
+
+            <div class="warehouse-live">
+
+                <span class="warehouse-live-dot"></span>
+
+                Live Warehouse Data
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= KPI ================= -->
+
+        <section class="warehouse-kpis">
+
+
+            <div class="warehouse-kpi">
+
+                <span>
+                    TOTAL WAREHOUSES
+                </span>
+
+                <strong id="warehouseCount">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="warehouse-kpi">
+
+                <span>
+                    TOTAL INVENTORY
+                </span>
+
+                <strong id="totalWarehouseStock">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="warehouse-kpi">
+
+                <span>
+                    LARGEST WAREHOUSE
+                </span>
+
+                <strong
+                    id="largestWarehouse"
+                    class="warehouse-name-kpi"
+                >
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="warehouse-kpi">
+
+                <span>
+                    AVERAGE STOCK
+                </span>
+
+                <strong id="averageWarehouseStock">
+                    --
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= CHARTS ================= -->
+
+        <section class="warehouse-chart-grid">
+
+
+            <!-- BAR CHART -->
+
+            <div class="warehouse-card">
+
+                <div class="warehouse-card-header">
+
+                    <div>
+
+                        <span>
+                            INVENTORY DISTRIBUTION
+                        </span>
+
+                        <h2>
+                            Stock by Warehouse
+                        </h2>
+
+                    </div>
+
+                    <span class="warehouse-icon">
+                        📊
+                    </span>
+
+                </div>
+
+
+                <div class="warehouse-chart">
+
+                    <canvas
+                        id="warehouseBarChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DOUGHNUT -->
+
+            <div class="warehouse-card">
+
+                <div class="warehouse-card-header">
+
+                    <div>
+
+                        <span>
+                            INVENTORY SHARE
+                        </span>
+
+                        <h2>
+                            Warehouse Distribution
+                        </h2>
+
+                    </div>
+
+                    <span class="warehouse-icon">
+                        🥧
+                    </span>
+
+                </div>
+
+
+                <div class="warehouse-chart warehouse-doughnut">
+
+                    <canvas
+                        id="warehousePieChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= WAREHOUSE CARDS ================= -->
+
+        <section>
+
+            <div class="warehouse-section-heading">
+
+                <div>
+
+                    <span>
+                        WAREHOUSE OVERVIEW
+                    </span>
+
+                    <h2>
+                        Distribution by Location
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="warehouseCards"
+                class="warehouse-cards"
+            >
+
+                <div class="warehouse-loading">
+                    Loading warehouses...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= INSIGHT ================= -->
+
+        <section class="warehouse-insight">
+
+            <div class="warehouse-insight-icon">
+                🧠
+            </div>
+
+            <div>
+
+                <span>
+                    WAREHOUSE INTELLIGENCE
+                </span>
+
+                <h3 id="warehouseInsight">
+                    Analyzing warehouse distribution...
+                </h3>
+
+                <p>
+                    Warehouse-level inventory analysis helps
+                    identify concentration, distribution and
+                    capacity patterns.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Smart Inventory Management System
+        </p>
+
+        <span>
+            PostgreSQL • FastAPI • Warehouse Analytics
+        </span>
+
+    </footer>
+
+
+    <script src="warehouses.js"></script>
+
+</body>
+
+</html>

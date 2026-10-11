@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | Smart Inventory</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-brand">
+            <span class="brand-icon">📦</span>
+            <span>SMART INVENTORY</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="inventory.html">
+                Inventory
+            </a>
+
+            <a href="analytics.html" class="active">
+                Analytics
+            </a>
+
+            <a href="ai.html">
+                AI Intelligence
+            </a>
+
+            <a href="warehouses.html">
+                Warehouses
+            </a>
+
+            <button onclick="logoutUser()" class="logout-btn">
+                Logout
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="analytics-page">
+
+        <!-- HERO -->
+
+        <section class="analytics-hero">
+
+            <div>
+
+                <span class="section-tag">
+                    DATA INTELLIGENCE
+                </span>
+
+                <h1>
+                    Inventory Analytics
+                </h1>
+
+                <p>
+                    Transforming inventory data into actionable
+                    business insights.
+                </p>
+
+            </div>
+
+            <div class="analytics-live">
+                <span class="live-dot"></span>
+                Live Data
+            </div>
+
+        </section>
+
+
+        <!-- ================= KPI CARDS ================= -->
+
+        <section class="analytics-kpis">
+
+            <div class="analytics-kpi-card">
+
+                <div class="kpi-icon">
+                    📦
+                </div>
+
+                <div>
+                    <span>Total Stock Records</span>
+                    <strong id="totalItems">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="analytics-kpi-card">
+
+                <div class="kpi-icon">
+                    ✅
+                </div>
+
+                <div>
+                    <span>Healthy Stock</span>
+                    <strong id="healthyStock">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="analytics-kpi-card">
+
+                <div class="kpi-icon">
+                    ⚠️
+                </div>
+
+                <div>
+                    <span>Low Stock</span>
+                    <strong id="lowStock">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="analytics-kpi-card">
+
+                <div class="kpi-icon">
+                    📊
+                </div>
+
+                <div>
+                    <span>Products Tracked</span>
+                    <strong id="productsTracked">
+                        --
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CHART ROW 1 ================= -->
+
+        <section class="chart-grid">
+
+            <!-- MONTHLY SALES -->
+
+            <div class="chart-card large-chart">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <span class="chart-label">
+                            SALES PERFORMANCE
+                        </span>
+
+                        <h2>
+                            Monthly Sales Trend
+                        </h2>
+
+                    </div>
+
+                    <span class="chart-icon">
+                        📈
+                    </span>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="salesChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- INVENTORY HEALTH -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <span class="chart-label">
+                            STOCK STATUS
+                        </span>
+
+                        <h2>
+                            Inventory Health
+                        </h2>
+
+                    </div>
+
+                    <span class="chart-icon">
+                        ❤️
+                    </span>
+
+                </div>
+
+                <div class="chart-container doughnut-container">
+                    <canvas id="healthChart"></canvas>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CHART ROW 2 ================= -->
+
+        <section class="chart-grid">
+
+            <!-- WAREHOUSE -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <span class="chart-label">
+                            WAREHOUSE DISTRIBUTION
+                        </span>
+
+                        <h2>
+                            Inventory by Warehouse
+                        </h2>
+
+                    </div>
+
+                    <span class="chart-icon">
+                        🏭
+                    </span>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="warehouseChart"></canvas>
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <span class="chart-label">
+                            CATEGORY ANALYSIS
+                        </span>
+
+                        <h2>
+                            Inventory by Category
+                        </h2>
+
+                    </div>
+
+                    <span class="chart-icon">
+                        🗂️
+                    </span>
+
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= TOP PRODUCTS ================= -->
+
+        <section class="chart-card top-products-section">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <span class="chart-label">
+                        PRODUCT PERFORMANCE
+                    </span>
+
+                    <h2>
+                        Top Selling Products
+                    </h2>
+
+                    <p>
+                        Products ranked by completed sales quantity.
+                    </p>
+
+                </div>
+
+                <span class="chart-icon">
+                    🏆
+                </span>
+
+            </div>
+
+            <div class="chart-container top-products-chart">
+                <canvas id="productsChart"></canvas>
+            </div>
+
+        </section>
+
+
+        <!-- ================= INSIGHT ================= -->
+
+        <section class="analytics-insight">
+
+            <div class="insight-icon">
+                💡
+            </div>
+
+            <div>
+
+                <span>
+                    INTELLIGENT INSIGHT
+                </span>
+
+                <h3 id="analyticsInsight">
+                    Analyzing inventory data...
+                </h3>
+
+                <p>
+                    Smart Inventory continuously analyzes
+                    stock, sales and warehouse activity to
+                    support better operational decisions.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <p>
+            © 2026 Smart Inventory Management System
+        </p>
+
+        <span>
+            PostgreSQL • FastAPI • AI • Analytics
+        </span>
+
+    </footer>
+
+
+    <script src="analytics.js"></script>
+
+</body>
+</html>

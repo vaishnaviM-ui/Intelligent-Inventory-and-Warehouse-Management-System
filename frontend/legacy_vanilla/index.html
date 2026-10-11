@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartInventory | AI Warehouse Intelligence</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+        /* Animated warehouse visual for the dashboard hero */
+        .hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: clamp(24px, 4vw, 64px);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 520px;
+            height: 420px;
+            right: 5%;
+            top: 5%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(34, 211, 238, .13), rgba(99, 102, 241, .08) 42%, transparent 72%);
+            filter: blur(16px);
+            z-index: -1;
+            animation: heroAura 7s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            flex: 0 1 42%;
+            min-width: 320px;
+        }
+
+        .hero-visual {
+            position: relative;
+            flex: 1 1 58%;
+            min-width: 0;
+            margin-right: -3%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            animation: heroFloat 6s ease-in-out infinite;
+        }
+
+        .hero-visual img {
+            display: block;
+            width: min(900%, 1000px);
+            max-width: none;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 24px 42px rgba(14, 165, 233, .16));
+            transform: translateZ(0);
+            animation: heroGlow 5s ease-in-out infinite alternate;
+        }
+
+        .hero-visual::after {
+            content: "";
+            position: absolute;
+            left: 17%;
+            right: 12%;
+            bottom: 7%;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(34, 211, 238, .22);
+            filter: blur(24px);
+            z-index: -1;
+            animation: shadowPulse 6s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translateY(0) rotateY(-2deg); }
+            50% { transform: translateY(-14px) rotateY(2deg); }
+        }
+
+        @keyframes heroGlow {
+            from { filter: drop-shadow(0 18px 32px rgba(14, 165, 233, .12)); }
+            to { filter: drop-shadow(0 28px 48px rgba(99, 102, 241, .25)); }
+        }
+
+        @keyframes heroAura {
+            from { transform: scale(.92); opacity: .65; }
+            to { transform: scale(1.08); opacity: 1; }
+        }
+
+        @keyframes shadowPulse {
+            0%, 100% { opacity: .45; transform: scaleX(.88); }
+            50% { opacity: .85; transform: scaleX(1.04); }
+        }
+
+        @media (max-width: 900px) {
+            .hero { flex-direction: column; align-items: flex-start; }
+            .hero-content, .hero-visual { flex-basis: auto; width: 100%; }
+            .hero-visual { max-width: 900px; width: 100%; align-self: center; margin: 8px auto 0; }
+            .hero-visual img { width: 100%; max-width: 900px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hero::before, .hero-visual, .hero-visual img, .hero-visual::after {
+                animation: none !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- ================= LOGIN SCREEN ================= -->
+
+    <div id="loginScreen" class="login-screen">
+
+        <div class="login-card">
+
+            <div class="login-logo">
+                📦
+            </div>
+
+            <h1>SmartInventory</h1>
+
+            <p class="login-subtitle">
+                AI Warehouse Intelligence
+            </p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter username"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Login
+                </button>
+
+                <div id="loginMessage"></div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <div id="dashboardScreen" class="dashboard-screen hidden">
+
+        <!-- NAVBAR -->
+
+        <header class="navbar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            📦
+        </div>
+
+        <div>
+            <h2>SmartInventory</h2>
+            <span>AI Warehouse Intelligence</span>
+        </div>
+
+    </div>
+
+    <div class="nav-links">
+
+        <a href="index.html" class="active">
+            Dashboard
+        </a>
+
+        <a href="inventory.html">
+            Inventory
+        </a>
+
+        <a href="products.html">
+            Products
+        </a>
+
+        <a href="analytics.html">
+            Analytics
+        </a>
+
+        <a href="ai.html">
+            AI Intelligence
+        </a>
+
+        <a href="warehouses.html">
+            Warehouses
+        </a>
+
+    </div>
+
+    <div class="nav-right">
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            System Online
+        </div>
+
+        <button
+            class="logout-button"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <p class="hero-label">
+                    INTELLIGENT INVENTORY PLATFORM
+                </p>
+
+                <h1>
+                    Smarter Inventory.
+                    <span>Better Decisions.</span>
+                </h1>
+
+                <p>
+                    Monitor inventory, analyze warehouse performance
+                    and predict future demand using AI-powered
+                    intelligence.
+                </p>
+
+                <a href="#aiSection" class="hero-button">
+                    Explore AI Intelligence →
+                </a>
+
+            </div>
+
+            <div class="hero-visual" aria-label="Illustration of an AI-powered smart warehouse">
+                <img src="../warehouse-ai.png" alt="Isometric smart warehouse with inventory racks, autonomous delivery robot, and AI analytics dashboards" fetchpriority="high">
+            </div>
+
+        </section>
+
+
+        <!-- KPI SECTION -->
+
+        <main>
+
+            <section class="overview">
+
+                <div class="section-heading">
+
+                    <div>
+                        <p class="section-label">
+                            LIVE OVERVIEW
+                        </p>
+
+                        <h2>
+                            Inventory Performance
+                        </h2>
+                    </div>
+
+                    <span class="live-badge">
+                        ● LIVE
+                    </span>
+
+                </div>
+
+
+                <div class="cards">
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            📦
+                        </div>
+
+                        <h3>Total Products</h3>
+
+                        <p id="products">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🏭
+                        </div>
+
+                        <h3>Total Warehouses</h3>
+
+                        <p id="warehouses">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            🚚
+                        </div>
+
+                        <h3>Total Suppliers</h3>
+
+                        <p id="suppliers">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            📊
+                        </div>
+
+                        <h3>Total Inventory</h3>
+
+                        <p id="inventory">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <div class="card warning-card">
+
+                        <div class="card-icon">
+                            ⚠️
+                        </div>
+
+                        <h3>Low Stock Items</h3>
+
+                        <p id="lowStock">
+                            Loading...
+                        </p>
+
+                    </div>
+
+
+                    <div class="card">
+
+                        <div class="card-icon">
+                            💰
+                        </div>
+
+                        <h3>Total Sales</h3>
+
+                        <p id="sales">
+                            Loading...
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= AI SECTION ================= -->
+
+            <section
+                class="ai-section"
+                id="aiSection"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            ARTIFICIAL INTELLIGENCE
+                        </p>
+
+                        <h2>
+                            AI Demand Prediction
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="prediction-box">
+
+                    <div class="ai-input">
+
+                        <label for="productId">
+                            Product ID
+                        </label>
+
+                        <input
+                            type="number"
+                            id="productId"
+                            value="1"
+                            min="1"
+                        >
+
+                        <button
+                            onclick="getPrediction()"
+                        >
+                            🤖 Predict Demand
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="predictionResult"
+                        class="result-box"
+                    >
+                        Enter a product ID and click
+                        Predict Demand.  
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= RESTOCK ================= -->
+
+            <section class="restock-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <p class="section-label">
+                            DECISION SUPPORT
+                        </p>
+
+                        <h2>
+                            Intelligent Restocking
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="prediction-box">
+
+                    <p>
+                        Let the system analyze predicted demand
+                        and current stock to recommend the
+                        optimal restocking quantity.
+                    </p>
+
+                    <button
+                        onclick="getRestock()"
+                        class="restock-button"
+                    >
+                        📦 Check Restocking
+                    </button>
+
+
+                    <div
+                        id="restockResult"
+                        class="result-box"
+                    >
+                        Click the button to check
+                        the recommendation.
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PIPELINE ================= -->
+
+            <section class="pipeline-section">
+
+                <p class="section-label">
+                    INTELLIGENCE PIPELINE
+                </p>
+
+                <h2>
+                    From Data to Decision
+                </h2>
+
+                <div class="pipeline">
+
+                    <div class="pipeline-item">
+                        <span>01</span>
+                        PostgreSQL
+                    </div>
+
+                    <div class="pipeline-arrow">→</div>
+
+                    <div class="pipeline-item">
+                        <span>02</span>
+                        Analytics
+                    </div>
+
+                    <div class="pipeline-arrow">→</div>
+
+                    <div class="pipeline-item">
+                        <span>03</span>
+                        Risk Analysis
+                    </div>
+
+                    <div class="pipeline-arrow">→</div>
+
+                    <div class="pipeline-item">
+                        <span>04</span>
+                        AI Forecast
+                    </div>
+
+                    <div class="pipeline-arrow">→</div>
+
+                    <div class="pipeline-item">
+                        <span>05</span>
+                        Smart Decision
+                    </div>
+
+                </div>
+             <!-- ================= INVENTORY INTELLIGENCE ================= -->
+<section class="dashboard-section intelligence-dashboard">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-tag">SMART ANALYTICS</span>
+            <h2>Inventory Intelligence</h2>
+            <p>Real-time insights generated from your inventory database.</p>
+        </div>
+
+        <div class="live-indicator">
+            <span class="status-dot"></span>
+            Live Data
+        </div>
+    </div>
+
+    <div class="intelligence-grid">
+
+        <!-- Inventory Health -->
+        <div class="intelligence-card">
+            <div class="card-icon">📦</div>
+
+            <div class="card-content">
+                <h3>Inventory Health</h3>
+                <p>Overall stock condition</p>
+
+                <div class="health-stats">
+                    <div>
+                        <strong id="totalInventoryItems">--</strong>
+                        <span>Total Items</span>
+                    </div>
+
+                    <div>
+                        <strong id="healthyStock">--</strong>
+                        <span>Healthy</span>
+                    </div>
+
+                    <div>
+                        <strong id="analyticsLowStock">--</strong>
+                        <span>Low Stock</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Warehouse Distribution -->
+        <div class="intelligence-card">
+            <div class="card-icon">🏭</div>
+
+            <div class="card-content">
+                <h3>Warehouse Distribution</h3>
+                <p>Current inventory across warehouses</p>
+
+                <div id="warehouseAnalytics" class="analytics-list">
+                    <div class="analytics-loading">
+                        Loading warehouse data...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ================= TOP PRODUCTS ================= -->
+<section class="dashboard-section">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-tag">SALES ANALYTICS</span>
+            <h2>Top Selling Products</h2>
+            <p>Products ranked according to recorded sales quantity.</p>
+        </div>
+    </div>
+
+    <div class="top-products-card">
+
+        <div id="topProductsAnalytics" class="top-products-list">
+
+            <div class="analytics-loading">
+                Loading product analytics...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SYSTEM STATUS ================= -->
+<section class="dashboard-section">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-tag">SYSTEM MONITORING</span>
+            <h2>System Status</h2>
+            <p>Current status of major Smart Inventory components.</p>
+        </div>
+    </div>
+
+    <div class="system-status-grid">
+
+        <div class="system-status-card">
+            <div class="system-status-icon">⚡</div>
+
+            <div>
+                <span>FastAPI Backend</span>
+                <strong id="apiStatus">Checking...</strong>
+            </div>
+        </div>
+
+
+        <div class="system-status-card">
+            <div class="system-status-icon">🗄️</div>
+
+            <div>
+                <span>PostgreSQL Database</span>
+                <strong id="databaseStatus">Checking...</strong>
+            </div>
+        </div>
+
+
+        <div class="system-status-card">
+            <div class="system-status-icon">🤖</div>
+
+            <div>
+                <span>AI Prediction</span>
+                <strong id="aiStatus">Available</strong>
+            </div>
+        </div>
+
+
+        <div class="system-status-card">
+            <div class="system-status-icon">🔐</div>
+
+            <div>
+                <span>JWT Security</span>
+                <strong id="securityStatus">Active</strong>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+        </main>
+
+
+           
+        <!-- FOOTER -->
+
+        <footer>
+
+            <div>
+                <strong>SmartInventory</strong>
+                <p>
+                    Intelligent Inventory & Warehouse
+                    Management System
+                </p>
+            </div>
+
+            <p>
+                AI-powered inventory intelligence
+            </p>
+
+        </footer>
+
+    </div>
+
+
+    <script src="script.js"></script>
+</body>
+
+</html> 
