@@ -7,6 +7,8 @@ load_dotenv(dotenv_path=env_path)
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from database import get_db, engine, Base
@@ -25,6 +27,8 @@ from routers import (
     notifications_router,
     reports_router
 )
+
+frontend_dist = Path(__file__).resolve().parent / "static"
 
 # Initialize FastAPI application
 app = FastAPI(
@@ -58,6 +62,9 @@ app.include_router(reports_router.router)
 
 @app.get("/")
 def home():
+    index_file = frontend_dist / "index.html"
+    if index_file.is_file():
+        return FileResponse(index_file)
     return {
         "title": "Intelligent Inventory and Warehouse Management System",
         "status": "Online",
@@ -80,6 +87,10 @@ def health_check(db: Session = Depends(get_db)):
             status_code=503,
             detail=f"Database connection failed: {str(e)}"
         )
+
+# In production, serve the Vite build and API from the same origin.
+if frontend_dist.is_dir():
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
 
 # Make sure tables exist if running fresh
 @app.on_event("startup")

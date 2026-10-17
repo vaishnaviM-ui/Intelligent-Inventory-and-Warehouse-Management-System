@@ -1,14 +1,6 @@
 export const API_BASE_URL =
   import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://127.0.0.1:8001" : "");
 
-function requireApiUrl() {
-  if (!API_BASE_URL) {
-    throw new Error(
-      "The frontend is published, but its API is not configured. Deploy the FastAPI backend and set the GitHub Actions variable VITE_API_URL to its public HTTPS URL."
-    );
-  }
-}
-
 function buildQuery(params = {}) {
   const query = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -49,7 +41,6 @@ export function setUser(user) {
 }
 
 export async function request(endpoint, options = {}) {
-  requireApiUrl();
   const token = getToken();
   const headers = {
     "Accept": "application/json",
@@ -94,7 +85,6 @@ export async function request(endpoint, options = {}) {
 export const api = {
   // Auth
   login: async (username, password) => {
-    requireApiUrl();
     const formData = new URLSearchParams();
     formData.append("username", username);
     formData.append("password", password);

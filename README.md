@@ -1,27 +1,26 @@
 # Intelligent Inventory and Warehouse Management System
 
-Inventory and warehouse management application with a React/Vite frontend, FastAPI backend, PostgreSQL database, and optional demand-forecasting pipeline.
+Inventory and warehouse management application with a React/Vite frontend, FastAPI backend, PostgreSQL database, and optional demand forecasting.
 
-## Open the frontend
+## Deploy frontend and backend together
 
-After the one-time GitHub Pages setup below, open the React frontend here:
+The React build and FastAPI API are served by the same Render web service, so the application uses one public URL and the frontend calls the API on that same origin. PostgreSQL remains a separate managed database service.
 
-**https://vaishnaviM-ui.github.io/Intelligent-Inventory-and-Warehouse-Management-System/**
+### One-time deployment
 
-The repository currently serves its README from GitHub Pages. To publish the React frontend instead, open the repository's **Settings → Pages** and select **GitHub Actions** as the build and deployment source. The **Deploy frontend to GitHub Pages** workflow has already built and deployed the frontend once; after switching the source, the URL above should open the app directly. Future pushes to `main` deploy automatically, so you do not need to start a local frontend server.
+1. Create or select a PostgreSQL database that Render can reach. Get its connection string; do not share or commit it.
+2. Select **[Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FvaishnaviM-ui%2FIntelligent-Inventory-and-Warehouse-Management-System)** and authorize Render to access this repository.
+3. Render reads [`render.yaml`](./render.yaml) and builds the app using the root [`Dockerfile`](./Dockerfile). When prompted, set `DATABASE_URL` to your hosted PostgreSQL connection string. Render generates `SECRET_KEY` for the web service.
+4. Deploy the Blueprint. Wait for the service health check at `/health` to pass.
+5. Open the `onrender.com` URL shown on the Render service. Sign in there; the API docs are at the same host's `/docs`.
 
-> GitHub Pages hosts the frontend only. Sign-in, inventory data, reports, and other API-backed features require a separately hosted FastAPI backend and PostgreSQL database. Until that backend is deployed and configured, the frontend displays a message that API access is unavailable.
+The root URL is the frontend and API requests go to that same URL. After the initial deployment, pushes to the connected branch trigger automatic redeploys. You do not need to start a local frontend or backend server to use the hosted app.
 
-### Connect the hosted frontend to the backend
+The included Blueprint uses Render's free web-service plan, which may spin down when idle. Availability and database pricing depend on the PostgreSQL provider and its plan. Keep production database credentials and secrets in Render's environment settings. Do not point the application at a database containing important data until you have verified the connection and backup.
 
-1. Deploy the FastAPI backend and PostgreSQL database to a hosting provider. The API must be reachable over HTTPS from a browser.
-2. In this repository, open **Settings → Secrets and variables → Actions → Variables**.
-3. Add a repository variable named `VITE_API_URL` with the backend base URL, for example `https://your-api.example.com` (do not add `/docs`).
-4. Push a commit to `main`, or manually run **Deploy frontend to GitHub Pages** from the **Actions** tab. The workflow builds the frontend with that API URL.
+The backend currently uses SQLAlchemy `create_all` to create missing mapped tables; it does not migrate or remove existing tables. Ensure the database schema is compatible before using an existing database.
 
-Do not put database credentials, JWT secrets, or other private values in `VITE_API_URL`; it is embedded in the public frontend bundle. Keep backend secrets in the backend hosting provider's environment configuration.
-
-## Run locally
+## Run locally for development
 
 ### Requirements
 
@@ -47,7 +46,7 @@ Do not put database credentials, JWT secrets, or other private values in `VITE_A
    python -m uvicorn main:app --host 127.0.0.1 --port 8001
    ```
 
-3. Start the React frontend in a second terminal:
+3. Start the React development server in a second terminal:
 
    ```powershell
    cd frontend
@@ -55,23 +54,16 @@ Do not put database credentials, JWT secrets, or other private values in `VITE_A
    npm run dev
    ```
 
-4. Open the Vite URL shown in the terminal (normally `http://localhost:5173/`) and sign in with an existing account.
+4. Open `http://localhost:5173/`. During local development, the frontend sends API requests to `http://127.0.0.1:8001` by default.
 
-For local development, the frontend uses `http://127.0.0.1:8001` by default. To use another local or hosted API, set `VITE_API_URL` in a `frontend/.env.local` file before starting Vite.
-
-The backend expects an already provisioned PostgreSQL database. Startup uses SQLAlchemy `create_all` to create missing mapped tables; it does not migrate or remove existing tables. Do not point it at a database whose schema or data you need to protect until you have verified the configuration.
-
-## API and database checks
-
-- API documentation: `http://127.0.0.1:8001/docs`
-- Database health: `http://127.0.0.1:8001/health`
+To use a different API while developing, set `VITE_API_URL` in `frontend/.env.local`.
 
 ## Demand model training
 
-Training is optional and is not required to start the API. Once the database connection is configured and historical sales are available, run from `backend`:
+Training is optional. Once the database connection is configured and historical sales are available, run from `backend`:
 
 ```powershell
 python ai/train_model.py
 ```
 
-The generated model and metrics files are local artifacts and are intentionally excluded from Git. Do not run `seed_data.py` against a database containing real or historical records; that script can insert synthetic sales.
+Generated model and metrics files are local artifacts and are intentionally excluded from Git. Do not run `seed_data.py` against a database containing real or historical records; it can insert synthetic sales.
