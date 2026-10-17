@@ -4,11 +4,11 @@ Inventory and warehouse management application with a React/Vite frontend, FastA
 
 ## Open the frontend
 
-The public frontend is published with GitHub Pages:
+After the one-time GitHub Pages setup below, open the React frontend here:
 
 **https://vaishnaviM-ui.github.io/Intelligent-Inventory-and-Warehouse-Management-System/**
 
-The GitHub Pages deployment runs automatically whenever changes are pushed to `main`. To enable it the first time, open the repository's **Settings → Pages** and select **GitHub Actions** as the build and deployment source. After the first successful **Deploy frontend to GitHub Pages** workflow, the link above opens the app directly; you do not need to start a local frontend server.
+The repository currently serves its README from GitHub Pages. To publish the React frontend instead, open the repository's **Settings → Pages** and select **GitHub Actions** as the build and deployment source. The **Deploy frontend to GitHub Pages** workflow has already built and deployed the frontend once; after switching the source, the URL above should open the app directly. Future pushes to `main` deploy automatically, so you do not need to start a local frontend server.
 
 > GitHub Pages hosts the frontend only. Sign-in, inventory data, reports, and other API-backed features require a separately hosted FastAPI backend and PostgreSQL database. Until that backend is deployed and configured, the frontend displays a message that API access is unavailable.
 
