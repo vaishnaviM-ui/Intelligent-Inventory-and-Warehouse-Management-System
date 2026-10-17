@@ -4,24 +4,17 @@ Inventory and warehouse management application with a React/Vite frontend, FastA
 
 ## Deployment
 
-The frontend and backend are deployed separately:
+The React frontend is published as a static site on GitHub Pages:
 
 - **Frontend:** [GitHub Pages](https://vaishnaviM-ui.github.io/Intelligent-Inventory-and-Warehouse-Management-System/)
-- **Backend API:** Render, at the service URL configured for this repository
-
-GitHub Pages serves the React site; it does not run the FastAPI backend or host the database. Sign-in and other data-backed features need the Render API and its PostgreSQL connection to be available.
 
 ### GitHub Pages frontend
 
 The [`Deploy frontend to GitHub Pages`](./.github/workflows/deploy-pages.yml) workflow builds and deploys the frontend on pushes to `main`. In repository **Settings → Pages**, set the build and deployment source to **GitHub Actions**. After that one-time setting, deployments run automatically; you do not need to start the frontend locally.
 
-The workflow uses the Render API URL `https://intelligent-inventory-0fpx.onrender.com` by default. To change it, add a repository variable named `VITE_API_URL` under **Settings → Secrets and variables → Actions → Variables**. This URL is embedded in the public frontend bundle, so do not put credentials or secrets in it.
+The Pages build is frontend-only and does not connect to Render or any other backend. GitHub Pages cannot run the FastAPI server or host the database, so sign-in and data-backed features require a separately configured backend and are unavailable in this deployment for now.
 
-### Render backend
-
-The [`render.yaml`](./render.yaml) Blueprint and root [`Dockerfile`](./Dockerfile) configure the FastAPI service. Set `DATABASE_URL` to the hosted PostgreSQL connection string in the Render service's environment settings; keep it private and never commit it. Render generates `SECRET_KEY`. The API health endpoint is `/health`, and its documentation is at `/docs`.
-
-The included Blueprint uses Render's free web-service plan, which may spin down when idle and delay the first request. Availability and database pricing depend on the PostgreSQL provider and its plan. The backend uses SQLAlchemy `create_all` to create missing mapped tables; it does not migrate or remove existing tables. Ensure the database schema is compatible before using an existing database.
+To connect a backend later, configure a repository variable named `VITE_API_URL` under **Settings → Secrets and variables → Actions → Variables**, then update the workflow to use that variable. This URL is embedded in the public frontend bundle; never put credentials or secrets in it.
 
 ## Run locally for development
 

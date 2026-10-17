@@ -36,7 +36,7 @@ jobs:
         run: npm run build
         working-directory: frontend
         env:
-          VITE_API_URL: ${{ vars.VITE_API_URL || 'https://intelligent-inventory-0fpx.onrender.com' }}
+          VITE_API_URL: ""
           GITHUB_ACTIONS: true
 
       - name: Upload Pages artifact
