@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_BASE_URL } from "../services/api";
 import { 
   Search, 
   Bell, 
@@ -132,18 +133,20 @@ export default function Navbar({
                 </div>
               </div>
 
-              <a
-                href="http://127.0.0.1:8001/docs"
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between px-4 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-800 transition-colors"
-              >
-                <span>Swagger API Docs</span>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-              </a>
+              {API_BASE_URL && (
+                <a
+                  href={`${API_BASE_URL}/docs`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between px-4 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-800 transition-colors"
+                >
+                  <span>Swagger API Docs</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                </a>
+              )}
 
               <a
-                href="/legacy_vanilla/index.html"
+                href={`${import.meta.env.BASE_URL}legacy_vanilla/index.html`}
                 className="flex items-center justify-between px-4 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-800 transition-colors"
               >
                 <span>Legacy Vanilla View</span>

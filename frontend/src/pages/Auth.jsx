@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { api, setToken, setUser } from "../services/api";
+import { API_BASE_URL, api, setToken, setUser } from "../services/api";
 
 export default function Auth({ onAuthenticated }) {
   const [mode, setMode] = useState("login");
@@ -105,6 +105,12 @@ export default function Auth({ onAuthenticated }) {
             ? "Enter your username or email to continue."
             : "Enter your details to register."}
         </p>
+
+        {!API_BASE_URL && (
+          <div role="status" className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+            The frontend is online, but login is unavailable until its backend API is deployed and configured.
+          </div>
+        )}
 
         {error && (
           <div role="alert" className="mb-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
