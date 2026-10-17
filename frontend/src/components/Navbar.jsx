@@ -133,15 +133,17 @@ export default function Navbar({
                 </div>
               </div>
 
-              <a
-                href={`${API_BASE_URL}/docs`}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between px-4 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-800 transition-colors"
-              >
-                <span>Swagger API Docs</span>
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-              </a>
+              {API_BASE_URL && (
+                <a
+                  href={`${API_BASE_URL}/docs`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-between px-4 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-800 transition-colors"
+                >
+                  <span>Swagger API Docs</span>
+                  <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+                </a>
+              )}
 
               <a
                 href={`${import.meta.env.BASE_URL}legacy_vanilla/index.html`}

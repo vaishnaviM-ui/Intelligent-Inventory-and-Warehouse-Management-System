@@ -1,6 +1,14 @@
 export const API_BASE_URL =
   import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://127.0.0.1:8001" : "");
 
+function ensureApiConfigured() {
+  if (!API_BASE_URL) {
+    throw new Error(
+      "The frontend is published, but no backend API is connected. Sign-in and data features are unavailable until a backend is configured."
+    );
+  }
+}
+
 function buildQuery(params = {}) {
   const query = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
@@ -41,6 +49,8 @@ export function setUser(user) {
 }
 
 export async function request(endpoint, options = {}) {
+  ensureApiConfigured();
+
   const token = getToken();
   const headers = {
     "Accept": "application/json",
@@ -85,6 +95,8 @@ export async function request(endpoint, options = {}) {
 export const api = {
   // Auth
   login: async (username, password) => {
+    ensureApiConfigured();
+
     const formData = new URLSearchParams();
     formData.append("username", username);
     formData.append("password", password);
@@ -93,7 +105,9 @@ export const api = {
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: formData,
     });
-    const data = await res.json();
+    const data = await res.json().catch(() => {
+      throw new Error("The server returned an invalid response. Check the backend API configuration.");
+    });
     if (!res.ok) throw new Error(data.detail || "Login failed");
     return data;
   },
