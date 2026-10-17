@@ -133,7 +133,7 @@ export default function Navbar({
               </div>
 
               <a
-                href="http://127.0.0.1:8000/docs"
+                href="http://127.0.0.1:8001/docs"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-between px-4 py-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-navy-800 transition-colors"

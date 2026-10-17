@@ -7,8 +7,8 @@ Inventory and warehouse management application with a FastAPI backend, PostgreSQ
 - Dashboard: `http://127.0.0.1:5500/legacy_vanilla/index.html`
 - Inventory: `http://127.0.0.1:5500/legacy_vanilla/inventory.html`
 - Products: `http://127.0.0.1:5500/legacy_vanilla/products.html`
-- API documentation: `http://127.0.0.1:8000/docs`
-- Database health: `http://127.0.0.1:8000/health`
+- API documentation: `http://127.0.0.1:8001/docs`
+- Database health: `http://127.0.0.1:8001/health`
 
 The static legacy frontend is the working UI. The React/Vite migration is incomplete and is not the application entry point yet.
 
@@ -34,7 +34,7 @@ The static legacy frontend is the working UI. The React/Vite migration is incomp
 3. Start the API in a terminal from the `backend` directory:
 
    ```powershell
-   python -m uvicorn main:app --host 127.0.0.1 --port 8000
+   python -m uvicorn main:app --host 127.0.0.1 --port 8001
    ```
 
 4. Start the static frontend in a second terminal from the project root:

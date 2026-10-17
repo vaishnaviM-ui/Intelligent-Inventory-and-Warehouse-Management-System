@@ -1,4 +1,14 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
+
+function buildQuery(params = {}) {
+  const query = new URLSearchParams();
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      query.set(key, String(value));
+    }
+  });
+  return query.toString();
+}
 
 export function getToken() {
   return localStorage.getItem("access_token");
@@ -97,7 +107,7 @@ export const api = {
 
   // Products
   getProducts: (params = {}) => {
-    const q = new URLSearchParams(params).toString();
+    const q = buildQuery(params);
     return request(`/products${q ? `?${q}` : ""}`);
   },
   getProduct: (id) => request(`/products/${id}`),
@@ -128,7 +138,7 @@ export const api = {
 
   // Inventory
   getInventory: (params = {}) => {
-    const q = new URLSearchParams(params).toString();
+    const q = buildQuery(params);
     return request(`/inventory${q ? `?${q}` : ""}`);
   },
   getLowStock: () => request("/inventory/low-stock"),
@@ -136,7 +146,7 @@ export const api = {
   stockOut: (payload) => request("/inventory/stock-out", { method: "POST", body: JSON.stringify(payload) }),
   adjustStock: (payload) => request("/inventory/adjust", { method: "POST", body: JSON.stringify(payload) }),
   getMovements: (params = {}) => {
-    const q = new URLSearchParams(params).toString();
+    const q = buildQuery(params);
     return request(`/inventory/movements${q ? `?${q}` : ""}`);
   },
   getValuation: (warehouseId) => request(`/inventory/valuation${warehouseId ? `?warehouse_id=${warehouseId}` : ""}`),
@@ -149,7 +159,7 @@ export const api = {
   deleteSupplier: (id) => request(`/suppliers/${id}`, { method: "DELETE" }),
 
   getPurchases: (params = {}) => {
-    const q = new URLSearchParams(params).toString();
+    const q = buildQuery(params);
     return request(`/purchases${q ? `?${q}` : ""}`);
   },
   getPurchase: (id) => request(`/purchases/${id}`),
@@ -159,7 +169,7 @@ export const api = {
 
   // Sales
   getSales: (params = {}) => {
-    const q = new URLSearchParams(params).toString();
+    const q = buildQuery(params);
     return request(`/sales${q ? `?${q}` : ""}`);
   },
   getSale: (id) => request(`/sales/${id}`),
@@ -178,12 +188,12 @@ export const api = {
   markNotificationRead: (id) => request(`/notifications/${id}/read`, { method: "PUT" }),
   markAllNotificationsRead: () => request("/notifications/read-all", { method: "PUT" }),
   getAuditLogs: (params = {}) => {
-    const q = new URLSearchParams(params).toString();
+    const q = buildQuery(params);
     return request(`/audit-logs${q ? `?${q}` : ""}`);
   },
 
   // Reports
-  exportInventoryCsv: () => `${API_BASE_URL}/reports/inventory/csv`,
-  exportMovementsCsv: () => `${API_BASE_URL}/reports/movements/csv`,
-  exportSalesCsv: () => `${API_BASE_URL}/reports/sales/csv`,
+  exportInventoryCsv: () => request("/reports/inventory/csv"),
+  exportMovementsCsv: () => request("/reports/movements/csv"),
+  exportSalesCsv: () => request("/reports/sales/csv"),
 };

@@ -68,10 +68,10 @@ def get_audit_logs(
 ):
     query = db.query(models.AuditLog)
 
-    if entity_type:
-        query = query.filter(models.AuditLog.entity_type.ilike(entity_type))
+    if entity_type and entity_type.strip():
+        query = query.filter(models.AuditLog.entity_type.ilike(f"%{entity_type.strip()}%"))
 
-    if search:
+    if search and search.strip():
         search_term = f"%{search.strip()}%"
         query = query.filter(
             or_(

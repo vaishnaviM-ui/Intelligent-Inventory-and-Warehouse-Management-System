@@ -9,7 +9,168 @@
   }
 }
 
-/* Custom scrollbar for modern enterprise SaaS tables and sidebars */
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #172033;
+  background: #f4f7fb;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(224, 231, 255, 0.34), transparent 34rem),
+    #f4f7fb;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.32);
+  outline-offset: 2px;
+}
+
+main h1 {
+  letter-spacing: -0.035em;
+}
+
+main .rounded-xl.border.bg-white,
+main .rounded-2xl.border.bg-white,
+.min-h-screen > .max-w-md {
+  border-color: #e3e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.045), 0 1px 2px rgba(15, 23, 42, 0.035);
+}
+
+main input:not([type="checkbox"]):not([type="radio"]),
+main select,
+main textarea,
+.min-h-screen input:not([type="checkbox"]):not([type="radio"]) {
+  border-color: #d8e0eb;
+  border-radius: 0.7rem;
+  background-color: #fff;
+  color: #172033;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+main input::placeholder,
+main textarea::placeholder,
+.min-h-screen input::placeholder {
+  color: #94a3b8;
+}
+
+main input:focus,
+main select:focus,
+main textarea:focus,
+.min-h-screen input:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+main table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+main table thead th {
+  color: #475569;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+main table tbody tr {
+  transition: background-color 140ms ease;
+}
+
+main table tbody tr:hover {
+  background-color: #f8faff;
+}
+
+button[class*="bg-blue-600"],
+a[class*="bg-blue-600"] {
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.17);
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+}
+
+button[class*="bg-blue-600"]:not(:disabled):hover,
+a[class*="bg-blue-600"]:hover {
+  filter: brightness(1.04);
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.2);
+  transform: translateY(-1px);
+}
+
+aside {
+  box-shadow: 8px 0 28px rgba(15, 23, 42, 0.035);
+}
+
+aside .flex-1 button {
+  min-height: 2.7rem;
+}
+
+.min-h-screen.flex.items-center.justify-center.bg-slate-100 {
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(199, 210, 254, 0.58), transparent 30rem),
+    radial-gradient(ellipse at 90% 90%, rgba(191, 219, 254, 0.52), transparent 28rem),
+    #f4f7fb;
+}
+
+.min-h-screen > .max-w-md {
+  border: 1px solid #e3e8f0;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background: #020617;
+}
+
+.dark main .rounded-xl.border.bg-white,
+.dark main .rounded-2xl.border.bg-white {
+  border-color: #263449;
+}
+
+.dark main input:not([type="checkbox"]):not([type="radio"]),
+.dark main select,
+.dark main textarea {
+  border-color: #334155;
+  background-color: #111c2e;
+  color: #e2e8f0;
+}
+
+.dark main table tbody tr:hover {
+  background-color: rgba(30, 41, 59, 0.58);
+}
+
+@media (max-width: 640px) {
+  main table th,
+  main table td {
+    padding: 0.7rem;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
