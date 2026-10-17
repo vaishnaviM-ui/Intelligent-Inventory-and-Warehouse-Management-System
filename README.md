@@ -2,23 +2,26 @@
 
 Inventory and warehouse management application with a React/Vite frontend, FastAPI backend, PostgreSQL database, and optional demand forecasting.
 
-## Deploy frontend and backend together
+## Deployment
 
-The React build and FastAPI API are served by the same Render web service, so the application uses one public URL and the frontend calls the API on that same origin. PostgreSQL remains a separate managed database service.
+The frontend and backend are deployed separately:
 
-### One-time deployment
+- **Frontend:** [GitHub Pages](https://vaishnaviM-ui.github.io/Intelligent-Inventory-and-Warehouse-Management-System/)
+- **Backend API:** Render, at the service URL configured for this repository
 
-1. Create or select a PostgreSQL database that Render can reach. Get its connection string; do not share or commit it.
-2. Select **[Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FvaishnaviM-ui%2FIntelligent-Inventory-and-Warehouse-Management-System)** and authorize Render to access this repository.
-3. Render reads [`render.yaml`](./render.yaml) and builds the app using the root [`Dockerfile`](./Dockerfile). When prompted, set `DATABASE_URL` to your hosted PostgreSQL connection string. Render generates `SECRET_KEY` for the web service.
-4. Deploy the Blueprint. Wait for the service health check at `/health` to pass.
-5. Open the `onrender.com` URL shown on the Render service. Sign in there; the API docs are at the same host's `/docs`.
+GitHub Pages serves the React site; it does not run the FastAPI backend or host the database. Sign-in and other data-backed features need the Render API and its PostgreSQL connection to be available.
 
-The root URL is the frontend and API requests go to that same URL. After the initial deployment, pushes to the connected branch trigger automatic redeploys. You do not need to start a local frontend or backend server to use the hosted app.
+### GitHub Pages frontend
 
-The included Blueprint uses Render's free web-service plan, which may spin down when idle. Availability and database pricing depend on the PostgreSQL provider and its plan. Keep production database credentials and secrets in Render's environment settings. Do not point the application at a database containing important data until you have verified the connection and backup.
+The [`Deploy frontend to GitHub Pages`](./.github/workflows/deploy-pages.yml) workflow builds and deploys the frontend on pushes to `main`. In repository **Settings → Pages**, set the build and deployment source to **GitHub Actions**. After that one-time setting, deployments run automatically; you do not need to start the frontend locally.
 
-The backend currently uses SQLAlchemy `create_all` to create missing mapped tables; it does not migrate or remove existing tables. Ensure the database schema is compatible before using an existing database.
+The workflow uses the Render API URL `https://intelligent-inventory-0fpx.onrender.com` by default. To change it, add a repository variable named `VITE_API_URL` under **Settings → Secrets and variables → Actions → Variables**. This URL is embedded in the public frontend bundle, so do not put credentials or secrets in it.
+
+### Render backend
+
+The [`render.yaml`](./render.yaml) Blueprint and root [`Dockerfile`](./Dockerfile) configure the FastAPI service. Set `DATABASE_URL` to the hosted PostgreSQL connection string in the Render service's environment settings; keep it private and never commit it. Render generates `SECRET_KEY`. The API health endpoint is `/health`, and its documentation is at `/docs`.
+
+The included Blueprint uses Render's free web-service plan, which may spin down when idle and delay the first request. Availability and database pricing depend on the PostgreSQL provider and its plan. The backend uses SQLAlchemy `create_all` to create missing mapped tables; it does not migrate or remove existing tables. Ensure the database schema is compatible before using an existing database.
 
 ## Run locally for development
 
